@@ -37,11 +37,11 @@ func main() {
 		log.Fatal("Please specify an interface type: 'eth' or 'wg'")
 	}
 
-	mode := os.Args[1]
+	arg := os.Args[1]
 	var device string
 	var isEthernet bool
 
-	switch mode {
+	switch arg {
 	case "eth":
 		device = "wlp1s0"
 		isEthernet = true
@@ -49,7 +49,8 @@ func main() {
 		device = "wg0"
 		isEthernet = false
 	default:
-		log.Fatalf("Invalid argument '%s'. Use 'eth' or 'wg'", mode)
+		device = arg
+		isEthernet = true
 	}
 
 	go capture(device, "tcp", isEthernet)
