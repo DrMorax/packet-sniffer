@@ -12,8 +12,7 @@ Can capture data including:
 - Payload data
 
 ## Requirements
-Go language compiler
-Node package manager
+Go language compiler and Node package manager
 
 
 ## Usage
