@@ -1,6 +1,5 @@
 # Packet sniffer
 
-## Description
 A TCP packet sniffer.
 Can capture data including:
 - Time stamp
