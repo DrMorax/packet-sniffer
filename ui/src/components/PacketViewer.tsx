@@ -53,7 +53,6 @@ export function PacketViewer() {
             </Badge>
           </CardTitle>
 
-          {/* Header Row for visual alignment */}
           <div className="flex items-center justify-between px-4 pt-4 text-sm font-medium text-muted-foreground">
             <div className="w-1/4">Timestamp</div>
             <div className="w-2/4 text-center">Source &rarr; Destination</div>
