@@ -29,7 +29,7 @@ var (
 	packetStore []Packet
 	storeMutex  sync.RWMutex
 	maxPackets  = 1000
-	maxSentPackets = 10
+	maxSentPackets = 20
 )
 
 func main() {
