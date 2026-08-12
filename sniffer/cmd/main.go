@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -14,26 +15,50 @@ import (
 )
 
 type Packet struct {
-	Timestamp time.Time `json:"timestamp"`
-	SrcIP     string    `json:"srcIp"`
-	SrcPort   uint16    `json:"srcPort"`
-	DstIP     string    `json:"dstIp"`
-	DstPort   uint16    `json:"dstPort"`
-	Flags     string    `json:"flags"`
-	Payload   int       `json:"payloadBytes"`
-	PayloadData string  `json:"payload_data"`
+	Timestamp   time.Time `json:"timestamp"`
+	SrcIP       string    `json:"srcIp"`
+	SrcPort     uint16    `json:"srcPort"`
+	DstIP       string    `json:"dstIp"`
+	DstPort     uint16    `json:"dstPort"`
+	Flags       string    `json:"flags"`
+	Payload     int       `json:"payloadBytes"`
+	PayloadData string    `json:"payload_data"`
 }
 
 var (
 	packetStore []Packet
 	storeMutex  sync.RWMutex
+	maxPackets  = 1000
 )
 
 func main() {
-	go capture("wg0", "tcp")
+	if len(os.Args) < 2 {
+		log.Fatal("Please specify an interface type: 'eth' or 'wg'")
+	}
+
+	mode := os.Args[1]
+	var device string
+	var isEthernet bool
+
+	switch mode {
+	case "eth":
+		device = "wlp1s0"
+		isEthernet = true
+	case "wg":
+		device = "wg0"
+		isEthernet = false
+	default:
+		log.Fatalf("Invalid argument '%s'. Use 'eth' or 'wg'", mode)
+	}
+
+	go capture(device, "tcp", isEthernet)
 
 	app := fiber.New(fiber.Config{
 		DisableStartupMessage: true,
+	})
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendFile("./index.html")
 	})
 
 	app.Use(cors.New(cors.Config{
@@ -46,7 +71,7 @@ func main() {
 
 		var res []Packet
 		if len(packetStore) > 10 {
-			res = packetStore[len(packetStore) - 10:]
+			res = packetStore[len(packetStore)-10:]
 		} else {
 			res = packetStore
 		}
@@ -61,11 +86,11 @@ func main() {
 		return c.SendStatus(fiber.StatusNoContent)
 	})
 
-	log.Println("Fiber API listening on :4001")
+	log.Printf("Capturing on %s. Fiber API listening on :4001\n", device)
 	log.Fatal(app.Listen(":4001"))
 }
 
-func capture(device, bpfFilter string) {
+func capture(device, bpfFilter string, isEthernet bool) {
 	handle, err := pcap.OpenLive(device, 1600, true, pcap.BlockForever)
 	if err != nil {
 		log.Fatalf("Error opening device %s: %v", device, err)
@@ -76,12 +101,18 @@ func capture(device, bpfFilter string) {
 		log.Fatalf("Error setting BPF filter: %v", err)
 	}
 
+	var eth layers.Ethernet
 	var ip4 layers.IPv4
 	var tcp layers.TCP
 	var payload gopacket.Payload
-	decoded := make([]gopacket.LayerType, 0, 4)
+	decoded := make([]gopacket.LayerType, 0, 5)
 
-	parser := gopacket.NewDecodingLayerParser(layers.LayerTypeIPv4, &ip4, &tcp, &payload)
+	var parser *gopacket.DecodingLayerParser
+	if isEthernet {
+		parser = gopacket.NewDecodingLayerParser(layers.LayerTypeEthernet, &eth, &ip4, &tcp, &payload)
+	} else {
+		parser = gopacket.NewDecodingLayerParser(layers.LayerTypeIPv4, &ip4, &tcp, &payload)
+	}
 	parser.IgnoreUnsupported = true
 
 	for {
@@ -126,6 +157,9 @@ func capture(device, bpfFilter string) {
 
 		if hasTCP && pkt.SrcIP != "" {
 			storeMutex.Lock()
+			if len(packetStore) >= maxPackets {
+				packetStore = packetStore[1:]
+			}
 			packetStore = append(packetStore, pkt)
 			storeMutex.Unlock()
 		}
