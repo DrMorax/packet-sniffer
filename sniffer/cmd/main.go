@@ -29,6 +29,7 @@ var (
 	packetStore []Packet
 	storeMutex  sync.RWMutex
 	maxPackets  = 1000
+	maxSentPackets = 10
 )
 
 func main() {
@@ -70,8 +71,8 @@ func main() {
 		defer storeMutex.RUnlock()
 
 		var res []Packet
-		if len(packetStore) > 10 {
-			res = packetStore[len(packetStore)-10:]
+		if len(packetStore) > maxSentPackets {
+			res = packetStore[len(packetStore)-maxSentPackets:]
 		} else {
 			res = packetStore
 		}

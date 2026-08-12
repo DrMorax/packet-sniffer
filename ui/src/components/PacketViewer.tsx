@@ -34,7 +34,7 @@ export function PacketViewer() {
         .then((data: Packet[]) => setPackets(data || []))
         .catch((error) => console.error("Fetch error:", error))
         .finally(() => {
-          timeoutId = setTimeout(fetchPackets, 1000)
+          timeoutId = setTimeout(fetchPackets, 100)
         })
     }
 
