@@ -22,7 +22,7 @@ type Packet struct {
 	DstPort     uint16    `json:"dstPort"`
 	Flags       string    `json:"flags"`
 	Payload     int       `json:"payloadBytes"`
-	PayloadData string    `json:"payload_data"`
+	PayloadData string    `json:"payloadData"`
 }
 
 var (
