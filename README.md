@@ -22,7 +22,7 @@ Can capture data including:
 git clone https://github.com/DrMorax/packet-sniffer.git
 ```
 ```bash
-cd sniffer && sudo go run main.go <your network interface>
+cd sniffer && sudo go run ./cmd/main.go <your network interface>
 ```
 
 and in another tab: 
