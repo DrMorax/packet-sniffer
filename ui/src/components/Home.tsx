@@ -97,7 +97,7 @@ export default function Home() {
     // SLIDE 1
     <div
       key="slide-1"
-      className="flex h-full flex-col items-center justify-center bg-gradient-to-b from-white to-slate-50 p-12 text-center"
+      className="flex h-full flex-col items-center justify-center bg-linear-to-b from-white to-slate-50 p-12 text-center"
     >
       <h1 className="mb-6 text-5xl font-bold tracking-tight text-slate-900 md:text-7xl">
         {SLIDE_CONTENT.slide1.titlePrefix}
@@ -142,7 +142,7 @@ export default function Home() {
       <h2 className="mb-10 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
         {SLIDE_CONTENT.slide3.title}
       </h2>
-      <div className="flex flex-grow flex-col justify-center">
+      <div className="flex grow flex-col justify-center">
         <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
           <table className="w-full text-left text-sm md:text-base">
             <thead className="bg-slate-900 text-white">
@@ -185,7 +185,7 @@ export default function Home() {
       <h2 className="mb-12 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
         {SLIDE_CONTENT.slide4.title}
       </h2>
-      <div className="grid flex-grow grid-cols-1 items-center gap-8 md:grid-cols-2">
+      <div className="grid grow grid-cols-1 items-center gap-8 md:grid-cols-2">
         {SLIDE_CONTENT.slide4.domains.map((domain, idx) => (
           <div
             key={`domain-${idx}`}
