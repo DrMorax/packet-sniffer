@@ -27,7 +27,7 @@ cd sniffer && sudo go run ./cmd/main.go <your network interface>
 
 and in another tab: 
 ```bash
-cd ui && npm run dev
+cd ui && npm i && npm run dev
 ```
 
 Finally, open up `http://localhost:3000` and you'll get a live stream of TCP packets sent by you or headed your way
