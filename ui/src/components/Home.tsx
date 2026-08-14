@@ -94,29 +94,6 @@ const SLIDE_CONTENT = {
       },
     ],
   },
-  slide5: {
-    title: "Core Mechanics",
-    mechanisms: [
-      {
-        icon: Layers,
-        title: "Encapsulation",
-        description:
-          "As data descends the stack, each layer appends its own specific header (and occasionally a trailer) to the payload received from the layer above, forming a new PDU.",
-      },
-      {
-        icon: ArrowUp,
-        title: "Decapsulation",
-        description:
-          "As data ascends the receiving stack, each layer interprets and strips off its corresponding header, passing only the remaining payload up to the next layer.",
-      },
-      {
-        icon: Network,
-        title: "Peer-to-Peer Logical Communication",
-        description:
-          "While data flows vertically within a host, each layer logically communicates horizontally with its exact counterpart on the remote host, relying on the headers attached during encapsulation.",
-      },
-    ],
-  },
 }
 
 export default function Home() {
@@ -227,29 +204,6 @@ export default function Home() {
             <p className="text-lg leading-relaxed text-slate-600">
               {domain.description}
             </p>
-          </div>
-        ))}
-      </div>
-    </div>,
-
-    // SLIDE 5
-    <div key="slide-5" className="flex h-full flex-col bg-white p-10 md:p-16">
-      <h2 className="mb-12 text-center text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
-        {SLIDE_CONTENT.slide5.title}
-      </h2>
-      <div className="grid flex-grow grid-cols-1 items-center gap-8 md:grid-cols-3">
-        {SLIDE_CONTENT.slide5.mechanisms.map((mech, idx) => (
-          <div
-            key={`mech-${idx}`}
-            className="flex flex-col items-center rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm"
-          >
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-              <HugeiconsIcon icon={mech.icon} size={32} />
-            </div>
-            <h3 className="mb-4 text-2xl font-semibold text-slate-900">
-              {mech.title}
-            </h3>
-            <p className="text-lg text-slate-600">{mech.description}</p>
           </div>
         ))}
       </div>
