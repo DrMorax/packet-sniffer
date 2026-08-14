@@ -1,11 +1,5 @@
 import { useState, useEffect, type ReactNode } from "react"
-import {
-  ArrowUp,
-  ChevronLeft,
-  ChevronRight,
-  Layers,
-  Network,
-} from "@hugeicons/core-free-icons"
+import { ChevronLeft, ChevronRight } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 const SLIDE_CONTENT = {
