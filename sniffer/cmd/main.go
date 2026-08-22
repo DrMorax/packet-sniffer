@@ -88,8 +88,8 @@ func main() {
 		return c.SendStatus(fiber.StatusNoContent)
 	})
 
-	log.Printf("Capturing on %s. Fiber API listening on :4001\n", device)
-	log.Fatal(app.Listen(":4001"))
+	log.Printf("Capturing on %s. Fiber API listening on :4000\n", device)
+	log.Fatal(app.Listen(":4000"))
 }
 
 func capture(device, bpfFilter string, isEthernet bool) {
